@@ -174,11 +174,10 @@ async def on_command_error(ctx, error):
     await ctx.send(error_msg)
 
 @client.command()
-async def ヘルプ(ctx):
-    message = f'''◆◇◆{client.user.name}の使い方◆◇◆
-{prefix}＋コマンドで命令できます。
-{prefix}conn：ボイスチャンネルに接続します。
-{prefix}disconn：ボイスチャンネルから切断します。'''
+async def help(ctx):
+    message = f'''◆◇◆How to {client.user.name}◆◇◆
+{prefix}conn:Connect to voice channel.
+{prefix}disconn:Disconnect to voice channel.'''
     await ctx.send(message)
 
 client.run(token)
