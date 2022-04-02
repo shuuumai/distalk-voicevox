@@ -17,17 +17,17 @@ with open('emoji_ja.json', encoding='utf-8') as file:
 
 @client.event
 async def on_ready():
-    presence = f'{prefix}h | 0/{len(client.guilds)}サーバー'
+    presence = f'{prefix}h | 0/{len(client.guilds)}server'
     await client.change_presence(activity=discord.Game(name=presence))
 
 @client.event
 async def on_guild_join(guild):
-    presence = f'{prefix}h | {len(client.voice_clients)}/{len(client.guilds)}サーバー'
+    presence = f'{prefix}h | {len(client.voice_clients)}/{len(client.guilds)}server'
     await client.change_presence(activity=discord.Game(name=presence))
 
 @client.event
 async def on_guild_remove(guild):
-    presence = f'{prefix}h | {len(client.voice_clients)}/{len(client.guilds)}サーバー'
+    presence = f'{prefix}h | {len(client.voice_clients)}/{len(client.guilds)}server'
     await client.change_presence(activity=discord.Game(name=presence))
 
 @client.command()
@@ -50,7 +50,7 @@ async def conn(ctx):
 async def disconn(ctx):
     if ctx.message.guild:
         if ctx.voice_client is None:
-            await ctx.send('ボイスチャンネルに接続していません。')
+            await ctx.send('Not connected to voice channel')
         else:
             await ctx.voice_client.disconnect()
 
@@ -129,7 +129,7 @@ async def on_message(message):
 async def on_voice_state_update(member, before, after):
     if before.channel is None:
         if member.id == client.user.id:
-            presence = f'{prefix}ヘルプ | {len(client.voice_clients)}/{len(client.guilds)}サーバー'
+            presence = f'{prefix}ヘルプ | {len(client.voice_clients)}/{len(client.guilds)}server'
             await client.change_presence(activity=discord.Game(name=presence))
         else:
             if member.guild.voice_client is None:
@@ -174,7 +174,7 @@ async def on_command_error(ctx, error):
     await ctx.send(error_msg)
 
 @client.command()
-async def h(ctx):
+async def help(ctx):
     message = f'''◆◇◆How to {client.user.name}◆◇◆
 {prefix}conn:Connect to voice channel.
 {prefix}disconn:Disconnect to voice channel.'''
