@@ -61,9 +61,6 @@ async def on_message(message):
             if not message.content.startswith(prefix):
                 text = message.content
 
-                # Add author's name
-                text = message.author.name + '、' + text
-
                 # Replace new line
                 text = text.replace('\n', '、')
 
