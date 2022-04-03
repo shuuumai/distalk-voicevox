@@ -6,7 +6,6 @@ import traceback
 import re
 import emoji
 import json
-from alphabet2kana import a2k
 
 prefix = os.getenv('DISCORD_BOT_PREFIX', default='🦑')
 token = os.environ['DISCORD_BOT_TOKEN']
@@ -61,9 +60,6 @@ async def on_message(message):
         if not message.author.bot:
             if not message.content.startswith(prefix):
                 text = message.content
-                
-                #Convert English to Katakana
-                text = a2k(text)
 
                 # Replace new line
                 text = text.replace('\n', '、')
