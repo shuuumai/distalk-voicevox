@@ -17,28 +17,28 @@ with open('emoji_ja.json', encoding='utf-8') as file:
 
 @client.event
 async def on_ready():
-    presence = f'{prefix}help | 0/{len(client.guilds)}サーバー'
+    presence = f'{prefix}how | 0/{len(client.guilds)}server'
     await client.change_presence(activity=discord.Game(name=presence))
 
 @client.event
 async def on_guild_join(guild):
-    presence = f'{prefix}help | {len(client.voice_clients)}/{len(client.guilds)}サーバー'
+    presence = f'{prefix}how | {len(client.voice_clients)}/{len(client.guilds)}server'
     await client.change_presence(activity=discord.Game(name=presence))
 
 @client.event
 async def on_guild_remove(guild):
-    presence = f'{prefix}help | {len(client.voice_clients)}/{len(client.guilds)}サーバー'
+    presence = f'{prefix}how | {len(client.voice_clients)}/{len(client.guilds)}server'
     await client.change_presence(activity=discord.Game(name=presence))
 
 @client.command()
 async def conn(ctx):
     if ctx.message.guild:
         if ctx.author.voice is None:
-            await ctx.send('ボイスチャンネルに接続してから呼び出してください。')
+            await ctx.send('Connect to the voice channel before calling.')
         else:
             if ctx.guild.voice_client:
                 if ctx.author.voice.channel == ctx.guild.voice_client.channel:
-                    await ctx.send('接続済みです。')
+                    await ctx.send('Already connected.')
                 else:
                     await ctx.voice_client.disconnect()
                     await asyncio.sleep(0.5)
@@ -50,7 +50,7 @@ async def conn(ctx):
 async def disconn(ctx):
     if ctx.message.guild:
         if ctx.voice_client is None:
-            await ctx.send('ボイスチャンネルに接続していません。')
+            await ctx.send('Not connected to voice channel')
         else:
             await ctx.voice_client.disconnect()
 
@@ -60,9 +60,6 @@ async def on_message(message):
         if not message.author.bot:
             if not message.content.startswith(prefix):
                 text = message.content
-
-                # Add author's name
-                text = message.author.name + '、' + text
 
                 # Replace new line
                 text = text.replace('\n', '、')
@@ -132,7 +129,7 @@ async def on_message(message):
 async def on_voice_state_update(member, before, after):
     if before.channel is None:
         if member.id == client.user.id:
-            presence = f'{prefix}help | {len(client.voice_clients)}/{len(client.guilds)}サーバー'
+            presence = f'{prefix}how | {len(client.voice_clients)}/{len(client.guilds)}server'
             await client.change_presence(activity=discord.Game(name=presence))
         else:
             if member.guild.voice_client is None:
@@ -147,7 +144,7 @@ async def on_voice_state_update(member, before, after):
                     member.guild.voice_client.play(discord.FFmpegPCMAudio(mp3url))
     elif after.channel is None:
         if member.id == client.user.id:
-            presence = f'{prefix}help | {len(client.voice_clients)}/{len(client.guilds)}サーバー'
+            presence = f'{prefix}how | {len(client.voice_clients)}/{len(client.guilds)}サーバー'
             await client.change_presence(activity=discord.Game(name=presence))
         else:
             if member.guild.voice_client:
@@ -177,11 +174,10 @@ async def on_command_error(ctx, error):
     await ctx.send(error_msg)
 
 @client.command()
-async def help(ctx):
-    message = f'''◆◇◆{client.user.name}の使い方◆◇◆
-{prefix}＋コマンドで命令できます。
-{prefix}conn：ボイスチャンネルに接続します。
-{prefix}disconn：ボイスチャンネルから切断します。'''
+async def how(ctx):
+    message = f'''◆◇◆How to {client.user.name}◆◇◆
+{prefix}conn:Connect to voice channel.
+{prefix}disconn:Disconnect to voice channel.'''
     await ctx.send(message)
 
 client.run(token)
